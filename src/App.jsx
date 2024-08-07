@@ -8,9 +8,10 @@ import Question from './components/Question';
 
 const initialState = {
   questions: [],
-  // answers: [],
+  answer: null,
   currentQuestion: 0,
   status: 'loading',
+	points: 0,
 };
 
 const reducer = (state, action) => {
@@ -34,6 +35,16 @@ const reducer = (state, action) => {
         status: 'activ',
       };
     }
+    case 'answer': {
+			const isCorrect = action.payload === state.questions[state.currentQuestion].correctOption;
+			const points = isCorrect ? state.points + state.questions[state.currentQuestion].points : state.points;
+
+      return {
+        ...state,
+        answer: action.payload,
+				points,
+      };
+    }
     default: {
       return state;
     }
@@ -41,7 +52,10 @@ const reducer = (state, action) => {
 };
 
 const App = () => {
-  const [{questions, status, currentQuestion}, dispatch] = useReducer(reducer, initialState);
+  const [{questions, status, currentQuestion, answer, points}, dispatch] = useReducer(
+    reducer,
+    initialState,
+  );
 
   const numQuestions = questions.length;
 
@@ -59,12 +73,15 @@ const App = () => {
         {status === 'loading' && <Loader />}
         {status === 'failed' && <Error />}
         {status === 'ready' && (
-          <StartScreen
-            numQuestions={numQuestions}
+          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+        )}
+        {status === 'activ' && (
+          <Question
+            question={questions[currentQuestion]}
             dispatch={dispatch}
+            answer={answer}
           />
         )}
-        {status === 'activ' && <Question question={questions[currentQuestion]} />}
       </Main>
     </div>
   );
