@@ -1,10 +1,12 @@
 import {useEffect, useReducer} from 'react';
-import Header from './components/Header';
+import Header from './UI/Header';
 import Main from './components/Main';
-import Loader from './components/Loader';
-import Error from './components/Error';
+import Loader from './UI/Loader';
+import Error from './UI/Error';
 import StartScreen from './components/StartScreen';
 import Question from './components/Question';
+import NextButton from './UI/NextButton';
+import Progress from './UI/Progress';
 
 const initialState = {
   questions: [],
@@ -45,6 +47,13 @@ const reducer = (state, action) => {
 				points,
       };
     }
+		case 'next': {
+			return {
+				...state,
+				answer: null,
+				currentQuestion: state.currentQuestion + 1,
+			};
+		}
     default: {
       return state;
     }
@@ -76,12 +85,22 @@ const App = () => {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {status === 'activ' && (
-          <Question
-            question={questions[currentQuestion]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+					<>
+						<Progress currentQuestion={currentQuestion} numQuestions={numQuestions} points={points} answer={answer} />
+						<Question
+							question={questions[currentQuestion]}
+							dispatch={dispatch}
+							answer={answer}
+						/>
+						<NextButton dispatch={dispatch} answer={answer} />
+					</>
         )}
+				{status === 'finished' && (
+					<>
+						<h2>Game Over</h2>
+						<p>You scored {points} points!</p>
+					</>
+				)}
       </Main>
     </div>
   );

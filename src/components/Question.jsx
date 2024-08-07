@@ -4,7 +4,7 @@ import Options from "./Options";
 
 const Question = ({question, dispatch, answer}) => {
   return (
-    <div>
+    <div className='questions'>
       <h3>{question.question}</h3>
       <Options question={question} dispatch={dispatch} answer={answer} />
     </div>
