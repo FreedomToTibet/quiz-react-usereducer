@@ -1,7 +1,8 @@
-import { useQuiz } from "../contexts/QuizContext";
+// import { useQuiz } from "../contexts/QuizContext";
+import PropTypes from 'prop-types';
 
-function StartScreen() {
-  const { numQuestions, dispatch } = useQuiz();
+const StartScreen = ({numQuestions, dispatch}) => {
+  // const { numQuestions, dispatch } = useQuiz();
 
   return (
     <div className="start">
@@ -11,10 +12,15 @@ function StartScreen() {
         className="btn btn-ui"
         onClick={() => dispatch({ type: "start" })}
       >
-        Let's start
+        Let&lsquo;s start
       </button>
     </div>
   );
 }
+
+StartScreen.propTypes = {
+  numQuestions: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
 
 export default StartScreen;
