@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types';
+import { useQuiz } from '../context/QuizContext';
 
-const Progress = ({ currentQuestion, numQuestions, points, answer }) => {
+const Progress = () => {
+	const {currentQuestion, numQuestions, points, answer} = useQuiz();
 	return (
 		<header className="progress">
 			<progress max={numQuestions} value={currentQuestion + Number(answer !== null)} />
@@ -11,12 +12,5 @@ const Progress = ({ currentQuestion, numQuestions, points, answer }) => {
 		</header>
 	)
 }
-
-Progress.propTypes = {
-  currentQuestion: PropTypes.number.isRequired,
-  numQuestions: PropTypes.number.isRequired,
-	points: PropTypes.number.isRequired,
-	answer: PropTypes.number
-};
 
 export default Progress;
